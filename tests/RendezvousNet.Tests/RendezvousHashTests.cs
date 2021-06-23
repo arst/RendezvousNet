@@ -77,6 +77,31 @@ namespace RendezvousNet.Tests
             result.Should().BeInRange((numberOfKeys / (numberOfNodes)) - 200, (numberOfKeys / (numberOfNodes)) + 200);
         }
 
+        [Fact]
+        public void RendezvousHash_DoNotReDistributesKeys_WhenNodesRemainTheSame()
+        {
+            const int numberOfNodes = 100;
+            const int numberOfKeys = 1_000_0;
+            var (hasher, distributedKeys, originalKeys, nodes) = DistributeKeys(numberOfNodes, numberOfKeys);
+
+            var newlyDistributedKeys = originalKeys.Select(key => (Key: key, Node: hasher.Get(key))).ToList();
+
+            var oldNodeByKeyDistribution = distributedKeys.ToDictionary(k => k.Key, k => k.Node);
+            var newNodeByKeyDistribution = newlyDistributedKeys.ToDictionary(k => k.Key, k => k.Node);
+
+            var result = 0;
+
+            foreach (var key in originalKeys)
+            {
+                if (oldNodeByKeyDistribution[key] != newNodeByKeyDistribution[key])
+                {
+                    result++;
+                }
+            }
+
+            result.Should().Be(0);
+        }
+
         private static (RendezvousHash<string, DummyNode> Hasher, List<(string Key, DummyNode Node)> DistributedKeys, List<string> originalKeys, List<DummyNode>) DistributeKeys(int numberOfNodes, int numberOfKeys)
         {
             var nodes = Enumerable.Range(0, numberOfNodes).Select(i => new DummyNode()).ToList();
