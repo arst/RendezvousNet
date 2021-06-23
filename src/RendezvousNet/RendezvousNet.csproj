@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <PackageProjectUrl>https://github.com/arst/RendezvousNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/arst/RendezvousNet</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
