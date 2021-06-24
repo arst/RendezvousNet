@@ -78,7 +78,7 @@ namespace RendezvousNet.Tests
         }
 
         [Fact]
-        public void RendezvousHash_DoNotReDistributesKeys_WhenNodesRemainTheSame()
+        public void RendezvousHash_DoNotReDistributesKeys_When_NodesRemainTheSame()
         {
             const int numberOfNodes = 100;
             const int numberOfKeys = 1_000_0;
