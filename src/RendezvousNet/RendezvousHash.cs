@@ -16,7 +16,7 @@ namespace RendezvousNet
         /// Construct new instance of RendezvousHash.
         /// </summary>
         /// <param name="hashingFunction">A function to calculate a combined hash for node and key. This function must provide good uniform distribution. E.g. Fowler-Noll-Vo.</param>
-        /// <param name="initialNodes">A set of nodes, that isd available initially.</param>
+        /// <param name="initialNodes">A set of nodes, that are available initially.</param>
         /// <exception cref="ArgumentException"></exception>
         public RendezvousHash(Func<TKey,TNode, long> hashingFunction, IReadOnlyCollection<TNode> initialNodes)
         {
