@@ -5,27 +5,28 @@ using System.Collections.Generic;
 namespace RendezvousNet
 {
     /// <summary>
-    /// Implements rendezvous hashing (also known as highest random weight (HRW) hashing).
+    ///     Implements rendezvous hashing (also known as highest random weight (HRW) hashing).
     /// </summary>
-    public abstract class RendezvousHashBase<TKey, TNode> where TNode : IEquatable<TNode>, IProvideNodeId where TKey : IProvideKeyValue
+    public abstract class RendezvousHashBase<TKey, TNode> where TNode : IEquatable<TNode>, IProvideNodeId
+        where TKey : IProvideKeyValue
     {
         private readonly ConcurrentList<TNode> nodes;
 
         /// <summary>
-        /// Construct new instance of RendezvousHash.
+        ///     Construct new instance of RendezvousHash.
         /// </summary>
         /// <param name="initialNodes">A set of nodes, that are available initially.</param>
         /// <exception cref="ArgumentException"></exception>
         protected RendezvousHashBase(IReadOnlyCollection<TNode> initialNodes)
         {
             if (initialNodes is null || initialNodes.Count == 0) throw new ArgumentException(nameof(initialNodes));
-            
+
             nodes = new ConcurrentList<TNode>();
             nodes.AddRange(initialNodes);
         }
 
         /// <summary>
-        /// Removes the node from the pool of available nodes.
+        ///     Removes the node from the pool of available nodes.
         /// </summary>
         /// <param name="node">Node to remove from the poll of available nodes.</param>
         /// <returns>Indicator whether removal was successful.</returns>
@@ -35,7 +36,7 @@ namespace RendezvousNet
         }
 
         /// <summary>
-        /// Adds node to the poll of available nodes.
+        ///     Adds node to the poll of available nodes.
         /// </summary>
         /// <param name="node">Node to add to the pool of available nodes.</param>
         public void Add(TNode node)
@@ -45,7 +46,7 @@ namespace RendezvousNet
 
 
         /// <summary>
-        /// Maps key to the node according to rendezvous hashing algorithm.
+        ///     Maps key to the node according to rendezvous hashing algorithm.
         /// </summary>
         /// <param name="key">Key to be mapped to the node.</param>
         /// <returns>A node to which key was mapped according to rendezvous hashing algorithm</returns>
@@ -67,7 +68,7 @@ namespace RendezvousNet
         }
 
         /// <summary>
-        /// Calculates hash based on node Id and key value.
+        ///     Calculates hash based on node Id and key value.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="node"></param>

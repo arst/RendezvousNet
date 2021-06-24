@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RendezvousNet.Tests
 {
@@ -7,7 +6,7 @@ namespace RendezvousNet.Tests
     {
         protected override RendezvousHashBase<DummyKey, DummyNode> GetRendezvousHashingAlgorithm(List<DummyNode> nodes)
         {
-            return new RendezvousHashFNV<DummyKey, DummyNode>(nodes);
+            return new RendezvousHashFnv<DummyKey, DummyNode>(nodes);
         }
     }
 }
