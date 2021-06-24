@@ -7,26 +7,22 @@ namespace RendezvousNet
     /// <summary>
     /// Implements rendezvous hashing (also known as highest random weight (HRW) hashing).
     /// </summary>
-    public class RendezvousHash<TKey, TNode> where TNode: IEquatable<TNode>
+    public abstract class RendezvousHashBase<TKey, TNode> where TNode : IEquatable<TNode>, IProvideNodeId where TKey : IProvideKeyValue
     {
-        private readonly Func<TKey, TNode, long> hashingFunction;
         private readonly ConcurrentList<TNode> nodes;
 
         /// <summary>
         /// Construct new instance of RendezvousHash.
         /// </summary>
-        /// <param name="hashingFunction">A function to calculate a combined hash for node and key. This function must provide good uniform distribution. E.g. Fowler-Noll-Vo.</param>
         /// <param name="initialNodes">A set of nodes, that are available initially.</param>
         /// <exception cref="ArgumentException"></exception>
-        public RendezvousHash(Func<TKey,TNode, long> hashingFunction, IReadOnlyCollection<TNode> initialNodes)
+        protected RendezvousHashBase(IReadOnlyCollection<TNode> initialNodes)
         {
             if (initialNodes is null || initialNodes.Count == 0) throw new ArgumentException(nameof(initialNodes));
             
-            this.hashingFunction = hashingFunction ?? throw new ArgumentException(nameof(initialNodes));
             nodes = new ConcurrentList<TNode>();
             nodes.AddRange(initialNodes);
         }
-
 
         /// <summary>
         /// Removes the node from the pool of available nodes.
@@ -60,7 +56,7 @@ namespace RendezvousNet
 
             foreach (var node in nodes)
             {
-                var currentHash = hashingFunction(key, node);
+                var currentHash = CalculateHash(key, node);
 
                 if (currentHash <= maxValue) continue;
                 result = node;
@@ -69,5 +65,13 @@ namespace RendezvousNet
 
             return result;
         }
+
+        /// <summary>
+        /// Calculates hash based on node Id and key value.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="node"></param>
+        /// <returns>Hash value</returns>
+        protected abstract long CalculateHash(TKey key, TNode node);
     }
 }
